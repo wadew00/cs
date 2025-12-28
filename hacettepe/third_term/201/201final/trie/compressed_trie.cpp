@@ -1,5 +1,6 @@
 #include <map>
 #include <list>
+#include <string>
 using namespace std;
 struct Edge {
     const string* str; // hangi string’e ait
