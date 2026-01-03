@@ -3,6 +3,7 @@
 #include <map>
 #include <list>
 #include <iostream>
+#include <vector>
 using namespace std;
 struct Node{
     int id;
@@ -31,28 +32,55 @@ class Graph{
         list<Node> getAllNeighbours(const Node& n){
             return adj[n];
         }
+        void dfsRecursive(Node& v,vector<bool>& visited){
+            visited[v.id]= true;
+            cout<<"Visited: "<<v.heavyData<<endl;
+            for(auto& ver: adj[v]){
+                if(visited[ver.id]==false){
+                    dfsRecursive(ver,visited);
+                }
+            }
+        }
 };
 int main(){
     Graph g;
-    Node n1 = {1, "Data_A"};
-    Node n2 = {2, "Data_B"};
-    Node n3 = {3, "Data_C"};
 
+    // CREATE NODES TO TEST
+    Node n1 = {0, "data_v"};
+    Node n2 = {1, "Data_u"};
+    Node n3 = {2, "Data_w"};
+    Node n4 = {3, "data_x"};
+    Node n5 = {4, "Data_q"};
+    Node n6 = {5, "Data_t"};
+    Node n7 = {6, "Data_r"};
+    Node n8 = {7, "Data_s"};
     g.addNode(n1);
     g.addNode(n2);
     g.addNode(n3);
+    g.addNode(n4);
+    g.addNode(n5);
+    g.addNode(n6);
+    g.addNode(n7);
+    g.addNode(n8);
 
-    g.addEdge(n1, n2);
-    g.addEdge(n2, n3);
+    // CONSTRUCT THEIR EDGES
+    g.addEdge(n1,n2);
+    g.addEdge(n1,n3);
+    g.addEdge(n1,n4);
+    g.addEdge(n2,n5);
+    g.addEdge(n2,n6);
+    g.addEdge(n5,n7);
+    g.addEdge(n5,n8);
 
-    // 5. Retrieve and Print Neighbors
+    //  Retrieve and Print Neighbors
     cout << "Neighbors of Node " << n2.id << " (" << n2.heavyData << "):\n";
-    
-    // We get a copy of the list here
     list<Node> neighbors = g.getAllNeighbours(n2);
-
     for(const auto& neighbor : neighbors){
         cout << " - ID: " << neighbor.id << ", Data: " << neighbor.heavyData << endl;
     }
+    // DFS RECURSIVE TEST
+    vector<bool> visited(8,false);
+    g.dfsRecursive(n1,visited);
+
     return 0;
 }
