@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <queue>
 using namespace std;
 struct Node{
     int id;
@@ -16,6 +17,14 @@ struct Node{
         return id == other.id;
     }
 };
+/*
+struct Edge{
+    Node to;
+    int weight;
+};
+
+later look at djikstra algorithm
+*/
 class Graph{
     private:
         set<Node> Nodes;
@@ -42,20 +51,43 @@ class Graph{
                 }
             }
         }
-        void dfsIter(Node& v){
-            vector<bool> visited(8,false);
+        void dfsIter(const Node& startNode) { 
+
+            vector<bool> visited(8, false);
             stack<Node> s;
-            s.push(v);
+
+            s.push(startNode);
+
+
+            while(!s.empty()){
+                Node current = s.top();
+                s.pop();
+                if(!visited[current.id]){
+                    visited[current.id] = true;
+                    cout << "Visited: " << current.heavyData << endl;
+
+                    for(const auto& neighbor : adj[current]){
+                        if(!visited[neighbor.id]){
+                            s.push(neighbor);
+                        }
+                    }
+                }
+            }
+        }
+        void bfs(const Node& v){
+            queue<Node> q;
+            vector<bool> visited(8,false);
+            q.push(v);
             visited[v.id]=true;
             cout<<"Visited: "<<v.heavyData<<endl;
-            while(!s.empty()){
-                Node x = s.top();
-                s.pop();
-                for(auto& v: adj[x]){
-                    if(visited[v.id]==false){
-                        cout<<"Visited: "<<v.heavyData<<endl;
-                        visited[v.id]=true;
-                        s.push(v);
+            while(!q.empty()){
+                Node n = q.front();
+                q.pop();
+                for(auto& neigh: adj[n]){
+                    if(visited[neigh.id]==false){
+                        visited[neigh.id]=true;
+                        cout<<"Visited: "<<neigh.heavyData<<endl;
+                        q.push(neigh);
                     }
                 }
             }
@@ -102,9 +134,15 @@ int main(){
     cout<<"DFS RECURSIVE TEST"<<endl;
     g.dfsRecursive(n1,visited);
     cout<< "DFS RECURSIVE TEST END"<<endl;
+
     // DFS ITER TEST
     cout<<"DFS ITERATIVE TEST"<<endl;
     g.dfsIter(n1);
     cout<< "DFS ITERATIVE TEST END"<<endl;
+
+    // BFS TEST
+    cout<< "BFS TEST"<<endl;
+    g.bfs(n1);
+    cout<< "BFS TEST END"<<endl;
     return 0;
 }
