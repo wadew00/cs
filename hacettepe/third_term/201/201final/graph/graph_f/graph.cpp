@@ -57,8 +57,6 @@ class Graph{
             stack<Node> s;
 
             s.push(startNode);
-
-
             while(!s.empty()){
                 Node current = s.top();
                 s.pop();
@@ -66,7 +64,7 @@ class Graph{
                     visited[current.id] = true;
                     cout << "Visited: " << current.heavyData << endl;
 
-                    for(const auto& neighbor : adj[current]){
+                    for(auto& neighbor : adj[current]){
                         if(!visited[neighbor.id]){
                             s.push(neighbor);
                         }
