@@ -4,6 +4,7 @@
 #include <list>
 #include <iostream>
 #include <vector>
+#include <stack>
 using namespace std;
 struct Node{
     int id;
@@ -38,6 +39,24 @@ class Graph{
             for(auto& ver: adj[v]){
                 if(visited[ver.id]==false){
                     dfsRecursive(ver,visited);
+                }
+            }
+        }
+        void dfsIter(Node& v){
+            vector<bool> visited(8,false);
+            stack<Node> s;
+            s.push(v);
+            visited[v.id]=true;
+            cout<<"Visited: "<<v.heavyData<<endl;
+            while(!s.empty()){
+                Node x = s.top();
+                s.pop();
+                for(auto& v: adj[x]){
+                    if(visited[v.id]==false){
+                        cout<<"Visited: "<<v.heavyData<<endl;
+                        visited[v.id]=true;
+                        s.push(v);
+                    }
                 }
             }
         }
@@ -80,7 +99,12 @@ int main(){
     }
     // DFS RECURSIVE TEST
     vector<bool> visited(8,false);
+    cout<<"DFS RECURSIVE TEST"<<endl;
     g.dfsRecursive(n1,visited);
-
+    cout<< "DFS RECURSIVE TEST END"<<endl;
+    // DFS ITER TEST
+    cout<<"DFS ITERATIVE TEST"<<endl;
+    g.dfsIter(n1);
+    cout<< "DFS ITERATIVE TEST END"<<endl;
     return 0;
 }
